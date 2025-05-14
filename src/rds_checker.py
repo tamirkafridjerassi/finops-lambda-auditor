@@ -1,0 +1,1 @@
+# RDS checker stub

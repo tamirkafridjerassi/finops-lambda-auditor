@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: FinOps Lambda Auditor - EC2, EBS, and RDS reporting
+
+Resources:
+  FinOpsAuditFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: finops-audit-lambda
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.12
+      CodeUri: src/
+      Timeout: 120
+      MemorySize: 256
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Statement:
+            - Effect: Allow
+              Action:
+                - ec2:DescribeInstances
+                - ec2:DescribeVolumes
+                - rds:DescribeDBInstances
+                - cloudwatch:GetMetricStatistics
+                - s3:CreateBucket
+                - s3:PutObject
+                - s3:ListBucket
+              Resource: "*"
